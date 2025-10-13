@@ -90,7 +90,7 @@ describe("escrow", () => {
   it("Initializes escrow", async () => {
     try {
       await program.methods
-        .initializeEscrow(escrowAmount, receiver.publicKey)
+        .initializeOffer(escrowAmount, receiver.publicKey)
         .accounts({
           escrow: escrowKeypair.publicKey,
           initializer: provider.publicKey,
@@ -109,7 +109,7 @@ describe("escrow", () => {
       // Verify escrow state
       const escrowAccount = await program.account.escrow.fetch(escrowKeypair.publicKey);
       assert.ok(escrowAccount.initializer.equals(provider.publicKey));
-      assert.ok(escrowAccount.reciever.equals(receiver.publicKey));
+      assert.ok(escrowAccount.receiver.equals(receiver.publicKey));
       assert.ok(escrowAccount.mint.equals(mint));
       assert.equal(escrowAccount.amount.toString(), escrowAmount.toString());
 
@@ -129,12 +129,12 @@ describe("escrow", () => {
     const initialVaultBalance = await provider.connection.getTokenAccountBalance(vault);
 
     await program.methods
-      .claimEscrow()
+      .claimOffer()
       .accounts({
         escrow: escrowKeypair.publicKey,
         vaultAuthority: vaultAuthority,
         vault: vault,
-        reciever: receiver.publicKey,
+        receiver: receiver.publicKey,
         receiverTokenAccount: receiverTokenAccount,
         tokenProgram: TOKEN_PROGRAM_ID,
       })
