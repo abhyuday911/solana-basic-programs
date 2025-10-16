@@ -25,4 +25,8 @@ pub mod escrow {
     pub fn claim_offer(ctx: Context<ClaimEscrow>) -> Result<()> {
         instructions::claim_offer::claim_escrow(ctx)
     }
+
+    pub fn cancel_offer(ctx: Context<CancelEscrow>) -> Result<()>{
+        instructions::cancel_offer::cancel_escrow(ctx)
+    }
 }
