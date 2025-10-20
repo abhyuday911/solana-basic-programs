@@ -34,15 +34,15 @@ pub fn cancel_escrow(ctx: Context<CancelEscrow>) -> Result<()> {
     let signer = &[&seeds[..]];
 
     // for now remember the syntax // as in docs they had just new and not new_with_signer
-    let cpi_ctx = CpiContext::new_with_signer(
+    let cpi_ctx = CpiContext::new(
         ctx.accounts.token_program.to_account_info(),
         TokenTransfer {
             from: ctx.accounts.vault.to_account_info(),
             to: ctx.accounts.initializer_token_account.to_account_info(),
             authority: ctx.accounts.vault_authority.to_account_info(),
         },
-        signer,
-    );
+    )
+    .with_signer(signer);
 
     let _ = transfer(cpi_ctx, ctx.accounts.escrow.amount);
 
